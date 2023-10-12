@@ -1,18 +1,16 @@
 package danekerscode.api.model;
 
-import danekerscode.api.constants.Gender;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-
-import java.util.Base64;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
-public class User extends BaseEntity {
-    private String name;
-    private String surname;
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String email;
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-    private String imageUrl;
+    private String apiKey;
 }

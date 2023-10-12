@@ -1,18 +1,16 @@
 package danekerscode.api.model;
 
-import danekerscode.api.constants.ProductCategory;
+import danekerscode.api.constants.Gender;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
-import java.math.BigDecimal;
-
 @Entity
-public class Product extends BaseEntity {
+public class Customer extends BaseEntity {
     private String name;
-    private Float rating;
-    private BigDecimal price;
+    private String surname;
+    private String email;
     @Enumerated(EnumType.STRING)
-    private ProductCategory category;
+    private Gender gender;
     private String imageUrl;
 }
