@@ -30,4 +30,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final BiFunction<RuntimeException, Integer, ProblemDetail>
             withDetails = (e, sc) -> ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(sc), e.getMessage());
 
+
+
 }
