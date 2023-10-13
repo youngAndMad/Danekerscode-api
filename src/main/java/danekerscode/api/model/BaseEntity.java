@@ -30,5 +30,5 @@ public class BaseEntity {
     private Date updated;
 
     @JsonIgnore
-    private Boolean addedMyAdmin;
+    private Boolean addedByAdmin;
 }

@@ -25,7 +25,7 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public void send(MailSendRequest mailSendRequest) {
-        new Thread(
+        var mailSendingThread = new Thread(
                 () -> {
                     try {
                         var msg = mailSender.createMimeMessage();
@@ -47,12 +47,15 @@ public class MailServiceImpl implements MailService {
                         templateService.addInlineCommonImages(helper);
 
                         mailSender.send(msg);
-                        log.info("email send: {}",mailSendRequest.to());
+                        log.info("email send: {}", mailSendRequest.to());
                     } catch (Exception e) {
                         log.error("error during send mail message, {}", e.getMessage());
                     }
                 }
-        ).start();
-}
+        );
+
+        mailSendingThread.setDaemon(true);
+        mailSendingThread.start();
+    }
 
 }
