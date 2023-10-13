@@ -39,17 +39,18 @@ public class SecurityConfig {
             AuthenticationProvider authenticationProvider
     ) throws Exception {
 
-        http.authenticationProvider(authenticationProvider)
+        http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable);
 
 
-        http.authorizeHttpRequests(
-                req -> {
-                    req.requestMatchers("/customer").permitAll()
-                            .anyRequest().authenticated();
-                }
-        ).httpBasic();
+        http
+                .authorizeHttpRequests(
+                        req -> {
+                            req.requestMatchers("/customer").permitAll()
+                                    .anyRequest().authenticated();
+                        }
+                ).httpBasic();
 
 
         return http.build();

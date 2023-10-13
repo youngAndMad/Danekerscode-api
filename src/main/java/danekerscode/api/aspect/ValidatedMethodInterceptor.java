@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 
+import static danekerscode.api.validate.BindingValidator.validateRequest;
+
 @Aspect
 @Component
 @Slf4j
@@ -18,7 +20,7 @@ public class ValidatedMethodInterceptor {
     @Before("@annotation(danekerscode.api.annotation.ValidatedMethod) && args(.., br)")
     public void validateMethod(BindingResult br) {
         log.info("validating request in interceptor");
-        BindingValidator.validateRequest(br);
+        validateRequest(br);
     }
 
 }

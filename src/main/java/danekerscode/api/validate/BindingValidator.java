@@ -41,7 +41,7 @@ public class BindingValidator {
      */
     public static void validateRequest(BindingResult br) {
         if (br.hasErrors()) {
-            log.error("Invalid request from client" );
+            log.error("Invalid request in binding validator");
             returnErrorToClient.accept(br);
         }
     }
