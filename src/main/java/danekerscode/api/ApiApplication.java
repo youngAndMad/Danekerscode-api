@@ -1,13 +1,13 @@
 package danekerscode.api;
 
-import danekerscode.api.payload.request.MailSendRequest;
-import danekerscode.api.service.MailService;
+import danekerscode.api.controller.CustomerController;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
+@EnableAspectJAutoProxy
 public class ApiApplication {
 
 
@@ -15,17 +15,5 @@ public class ApiApplication {
         SpringApplication.run(ApiApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner runner(
-            MailService mailService
-    ){
-        return args -> {
-            mailService.send(
-                    new MailSendRequest(
-                            "kkraken2005@gmail.com",
-                            "www.google.com"
-                    )
-            );
-        };
-    }
+
 }

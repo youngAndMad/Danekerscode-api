@@ -28,3 +28,10 @@ spring:
       ddl-auto: none
   liquibase:
     enabled: false
+  mvc:
+    log-request-details: true
+logging:
+  level:
+    org:
+      springframework:
+        web: debug
