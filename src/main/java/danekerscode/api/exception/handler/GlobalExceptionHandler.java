@@ -1,5 +1,6 @@
 package danekerscode.api.exception.handler;
 
+import danekerscode.api.exception.AESException;
 import danekerscode.api.exception.EntityNotFoundException;
 import danekerscode.api.exception.InvalidRequestPayloadException;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvalidRequestPayloadException.class)
     ProblemDetail handle(InvalidRequestPayloadException e) {
         return withDetails.apply(e, 400);
+    }
+
+    @ExceptionHandler(AESException.class)
+    ProblemDetail handle(AESException e) {
+        return withDetails.apply(e, 500);
     }
 
 
