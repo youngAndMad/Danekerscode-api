@@ -9,4 +9,5 @@ import lombok.Setter;
 @Setter
 public class Image extends BaseEntity {
     private String base64Data;
+    private String name;
 }
