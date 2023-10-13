@@ -2,23 +2,27 @@ package danekerscode.api.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import danekerscode.api.repository.UserRepository;
+import danekerscode.api.service.AESService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class ApiKeyFilter extends OncePerRequestFilter {
 
     private final UserRepository userRepository;
     private final ObjectMapper objectMapper;
+    private final AESService aesService;
 
     @Override
     protected void doFilterInternal(
@@ -34,7 +38,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             var sb = new StringBuilder();
 
             if (emailFromHeader == null) {
-                sb.append("Missing email header");
+                sb.append("Missing email header. ");
             }
 
             if (apiKeyFromHeader == null) {
@@ -44,12 +48,14 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             response.setContentType("application/json");
             response.setStatus(401);
             response.getWriter().print(objectMapper.writeValueAsString(new ErrorMessage(sb.toString())));
+
+            log.error(sb.toString());
             return;
         }
 
         var optionalUser = userRepository.findByEmail(emailFromHeader);
 
-        if (optionalUser.isEmpty() || !optionalUser.get().getApiKey().equals(apiKeyFromHeader)){
+        if (optionalUser.isEmpty() || !optionalUser.get().getApiKey().equals(aesService.decrypt(apiKeyFromHeader))) {
 
             response.setStatus(401);
             response.setContentType("application/json");
@@ -61,5 +67,6 @@ public class ApiKeyFilter extends OncePerRequestFilter {
 
     }
 
-    record ErrorMessage(String error){}
+    record ErrorMessage(String error) {
+    }
 }

@@ -3,6 +3,7 @@ package danekerscode.api.service.impl;
 import danekerscode.api.exception.AESException;
 import danekerscode.api.service.AESService;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class AESServiceImpl implements AESService {
     @Value("${aes.transformation}")
     private String transformation;
 
-    @Value("${aes.transformation}")
+    @Value("${aes.algorithm}")
     private String algorithm;
 
     public String encrypt(String value) {

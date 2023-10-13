@@ -1,5 +1,6 @@
 package danekerscode.api.config;
 
+import danekerscode.api.filter.ApiKeyFilter;
 import danekerscode.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +15,8 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +24,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.util.Collections;
 
@@ -31,6 +35,7 @@ import java.util.Collections;
 public class SecurityConfig {
 
     private final UserRepository userRepository;
+    private final ApiKeyFilter apiKeyFilter;
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -39,19 +44,21 @@ public class SecurityConfig {
             AuthenticationProvider authenticationProvider
     ) throws Exception {
 
-        http
-                .csrf(AbstractHttpConfigurer::disable)
+        http.csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable);
 
-
-        http
-                .authorizeHttpRequests(
+        http.authorizeHttpRequests(
                         req -> {
                             req.requestMatchers("/customer").permitAll()
                                     .anyRequest().authenticated();
                         }
-                ).httpBasic();
+                )
+                .addFilterBefore(apiKeyFilter, UsernamePasswordAuthenticationFilter.class);
 
+        http.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http.httpBasic();
 
         return http.build();
     }
@@ -67,10 +74,10 @@ public class SecurityConfig {
     ) {
         var inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
 
-        inMemoryUserDetailsManager.createUser(new User("daneker@gmail.com", p.encode("password"), Collections.emptyList()));
-        UserDetails userDetails = inMemoryUserDetailsManager.loadUserByUsername("daneker@gmail.com");
+        inMemoryUserDetailsManager.createUser(
+                new User("daneker@gmail.com", p.encode("password"), Collections.emptyList())
+        );
 
-        System.out.println(userDetails.getPassword());
         return inMemoryUserDetailsManager;
     }
 

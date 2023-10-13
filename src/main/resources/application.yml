@@ -38,4 +38,4 @@ logging:
 aes:
   transformation: 'AES'
   algorithm: "AES"
-  secret: "7134743777217A25432A462D4A614E64" // 32 bytes
+  secret: "7134743777217A25432A462D4A614E64" # 32 bytes
