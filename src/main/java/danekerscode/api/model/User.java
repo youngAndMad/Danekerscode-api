@@ -16,9 +16,7 @@ public class User {
     private String email;
 
     @JsonIgnore
-    private String accessKey;
+    private String apiKey;
 
-    @JsonIgnore
-    private String secretKey;
-
+    private Boolean emailVerified;
 }

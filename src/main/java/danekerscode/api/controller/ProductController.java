@@ -1,11 +1,13 @@
 package danekerscode.api.controller;
 
+import danekerscode.api.annotation.ValidatedMethod;
 import danekerscode.api.dto.ProductDTO;
 import danekerscode.api.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,7 +30,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody @Valid ProductDTO productDTO) {
+    @ValidatedMethod
+    public ResponseEntity<?> create(
+            @RequestBody @Valid ProductDTO productDTO,
+            BindingResult br
+
+    ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(productDTO));
     }
 
@@ -47,7 +54,10 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> find(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.findById(id));
+    public ResponseEntity<?> find(
+            @PathVariable Long id
+    ) {
+        return ResponseEntity
+                .ok(productService.findById(id));
     }
 }
