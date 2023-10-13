@@ -20,7 +20,7 @@ public class TemplateServiceImpl implements TemplateService {
 
     @Override
     public MimeMessageHelper addInlineCommonImages(MimeMessageHelper helper) {
-        return null;
+        return null; // TODO: 10/13/2023 add icons with links
     }
 
     @Override

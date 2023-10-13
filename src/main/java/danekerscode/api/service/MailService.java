@@ -4,6 +4,6 @@ import danekerscode.api.payload.request.MailSendRequest;
 
 public interface MailService {
 
-    Void send(MailSendRequest mailSendRequest);
+    void send(MailSendRequest mailSendRequest);
 
 }

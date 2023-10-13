@@ -1,6 +1,5 @@
 package danekerscode.api.service.impl;
 
-import com.ea.async.Async;
 import danekerscode.api.payload.request.MailSendRequest;
 import danekerscode.api.service.MailService;
 import danekerscode.api.service.TemplateService;
@@ -25,8 +24,8 @@ public class MailServiceImpl implements MailService {
     private String mailSenderAddress;
 
     @Override
-    public Void send(MailSendRequest mailSendRequest) {
-        return Async.await(CompletableFuture.runAsync(
+    public void send(MailSendRequest mailSendRequest) {
+        new Thread(
                 () -> {
                     try {
                         var msg = mailSender.createMimeMessage();
@@ -35,16 +34,25 @@ public class MailServiceImpl implements MailService {
                         helper.setTo(mailSendRequest.to());
                         helper.setFrom(mailSenderAddress);
                         helper.setSubject("Email confirmation");
-                        helper.setText(templateService.getTemplate("email_confirmation", Map.of("email", mailSendRequest.to())), true);
+                        helper.setText(templateService.getTemplate(
+                                        "email_confirmation",
+                                        Map.of(
+                                                "email", mailSendRequest.to(),
+                                                "confirmationLink", mailSendRequest.confirmationLink()
+                                        )
+                                ),
+                                true
+                        );
 
                         templateService.addInlineCommonImages(helper);
 
                         mailSender.send(msg);
+                        log.info("email send: {}",mailSendRequest.to());
                     } catch (Exception e) {
                         log.error("error during send mail message, {}", e.getMessage());
                     }
                 }
-        ));
-    }
+        ).start();
+}
 
 }
