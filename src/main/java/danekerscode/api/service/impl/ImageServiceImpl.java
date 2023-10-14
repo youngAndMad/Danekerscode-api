@@ -4,6 +4,7 @@ import danekerscode.api.exception.EntityNotFoundException;
 import danekerscode.api.model.Image;
 import danekerscode.api.repository.ImageRepository;
 import danekerscode.api.service.ImageService;
+import danekerscode.api.utils.LinkHelper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import java.util.Base64;
 public class ImageServiceImpl implements ImageService {
 
     private final ImageRepository imageRepository;
+    private final LinkHelper linkHelper;
 
     @Override
     public String upload(MultipartFile file) {
@@ -30,7 +32,7 @@ public class ImageServiceImpl implements ImageService {
         }
 
         image.setName(file.getName());
-        return convertToDownloadUrl(imageRepository.save(image));
+        return linkHelper.getImageDownloadLink(imageRepository.save(image).getId());
     }
 
     @Override
@@ -62,7 +64,4 @@ public class ImageServiceImpl implements ImageService {
                 .orElseThrow(() -> new EntityNotFoundException(Image.class, id));
     }
 
-    private String convertToDownloadUrl(Image image) {
-        return null; // TODO: 10/13/2023
-    }
 }
