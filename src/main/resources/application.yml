@@ -22,6 +22,7 @@ spring:
             enable: true
   application:
     name: danekerscode-api
+    image-download-url-prefix: http://localhost:443/image/
   jpa:
     open-in-view: false
     hibernate:
