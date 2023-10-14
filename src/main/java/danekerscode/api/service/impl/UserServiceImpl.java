@@ -3,6 +3,7 @@ package danekerscode.api.service.impl;
 import danekerscode.api.exception.EmailRegisteredException;
 import danekerscode.api.mapper.UserMapper;
 import danekerscode.api.model.User;
+import danekerscode.api.payload.request.UserRegistrationRequest;
 import danekerscode.api.repository.UserRepository;
 import danekerscode.api.service.AESService;
 import danekerscode.api.service.UserService;
@@ -19,7 +20,9 @@ public class UserServiceImpl implements UserService {
     private final AESService aesService;
 
     @Override
-    public User register(String email) {
+    public User register(UserRegistrationRequest req) {
+        var email = req.email();
+
         var optionalUser = userRepository.findByEmail(email);
 
         optionalUser.ifPresent(u);

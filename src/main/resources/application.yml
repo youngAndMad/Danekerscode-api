@@ -39,3 +39,13 @@ aes:
   transformation: 'AES'
   algorithm: "AES"
   secret: "7134743777217A25432A462D4A614E64" # 32 bytes
+
+application:
+  admin:
+    username: bestadmin@gmail.com
+    password: strongerrr
+
+server:
+  servlet:
+    context-path: /api/v1/
+  port: 443

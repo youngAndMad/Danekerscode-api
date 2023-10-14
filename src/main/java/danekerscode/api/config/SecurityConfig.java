@@ -3,6 +3,7 @@ package danekerscode.api.config;
 import danekerscode.api.filter.ApiKeyFilter;
 import danekerscode.api.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -17,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,6 +28,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 @Configuration
@@ -37,8 +40,13 @@ public class SecurityConfig {
     private final UserRepository userRepository;
     private final ApiKeyFilter apiKeyFilter;
 
+    @Value("${application.admin.username}")
+    private String adminUsername;
+    @Value("${application.admin.password}")
+    private String adminPassword;
+
     public static final String[] insecureEndpoints = new String[]{
-      "/todo"
+            "/todo"
     };
 
     @Bean
@@ -57,7 +65,8 @@ public class SecurityConfig {
                                     .anyRequest().authenticated();
                         }
                 )
-                .addFilterBefore(apiKeyFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(apiKeyFilter, UsernamePasswordAuthenticationFilter.class)
+                .authenticationProvider(authenticationProvider);
 
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -74,12 +83,14 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(
-            PasswordEncoder p
+            PasswordEncoder passwordEncoder
     ) {
         var inMemoryUserDetailsManager = new InMemoryUserDetailsManager();
 
         inMemoryUserDetailsManager.createUser(
-                new User("daneker@gmail.com", p.encode("password"), Collections.emptyList())
+                new User(adminUsername, passwordEncoder.encode(adminPassword), new ArrayList<>() {{
+                    add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+                }})
         );
 
         return inMemoryUserDetailsManager;
