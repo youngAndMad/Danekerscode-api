@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+
+import static danekerscode.api.config.SecurityConfig.insecureEndpoints;
 
 @Component
 @Slf4j
@@ -30,6 +33,16 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
+
+        var requestUrl = request.getRequestURI();
+
+        if (
+                Arrays.stream(insecureEndpoints)
+                        .anyMatch(endpoint -> endpoint.endsWith(requestUrl))
+        ) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         var emailFromHeader = request.getHeader("email");
         var apiKeyFromHeader = request.getHeader("api_key");
@@ -64,6 +77,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             return;
         }
 
+        filterChain.doFilter(request, response);
 
     }
 

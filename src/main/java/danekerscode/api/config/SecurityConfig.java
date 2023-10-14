@@ -37,6 +37,10 @@ public class SecurityConfig {
     private final UserRepository userRepository;
     private final ApiKeyFilter apiKeyFilter;
 
+    public static final String[] insecureEndpoints = new String[]{
+      "/todo"
+    };
+
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain filterChain(
@@ -49,7 +53,7 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(
                         req -> {
-                            req.requestMatchers("/customer").permitAll()
+                            req.requestMatchers(insecureEndpoints).permitAll()
                                     .anyRequest().authenticated();
                         }
                 )

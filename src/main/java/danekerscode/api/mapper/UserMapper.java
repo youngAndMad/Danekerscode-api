@@ -1,16 +1,17 @@
 package danekerscode.api.mapper;
 
 import danekerscode.api.model.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
-@Mapper
+@Mapper(
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+)
 public interface UserMapper {
 
     @Mapping(target = "email", expression = "java(email)")
     @Mapping(target = "emailVerified", expression = "java(false)")
-    User toModel(String email);
+    User toModel(String email,String apiKey);
 
     void updateKey(String apiKey, @MappingTarget User user);
 }

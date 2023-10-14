@@ -2,11 +2,12 @@ package danekerscode.api.mapper;
 
 import danekerscode.api.dto.ProductDTO;
 import danekerscode.api.model.Product;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
-@Mapper
+@Mapper(
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
+)
 public interface ProductMapper {
 
     @Mapping(target = "id", ignore = true)
