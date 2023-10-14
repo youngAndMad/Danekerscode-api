@@ -25,8 +25,6 @@ public class UserServiceImpl implements UserService {
 
         var optionalUser = userRepository.findByEmail(email);
 
-        optionalUser.ifPresent(u);
-
         if (optionalUser.isPresent()) {
             throw new EmailRegisteredException(email);
         } else {
