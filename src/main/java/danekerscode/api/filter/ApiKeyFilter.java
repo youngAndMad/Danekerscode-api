@@ -44,6 +44,8 @@ public class ApiKeyFilter extends OncePerRequestFilter {
             return;
         }
 
+        final var APPLICATION_JSON = "application/json";
+
         var emailFromHeader = request.getHeader("email");
         var apiKeyFromHeader = request.getHeader("api_key");
 
@@ -58,7 +60,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
                 sb.append("Missing api key header");
             }
 
-            response.setContentType("application/json");
+            response.setContentType(APPLICATION_JSON);
             response.setStatus(401);
             response.getWriter().print(objectMapper.writeValueAsString(new ErrorMessage(sb.toString())));
 
@@ -71,7 +73,7 @@ public class ApiKeyFilter extends OncePerRequestFilter {
         if (optionalUser.isEmpty() || !optionalUser.get().getApiKey().equals(aesService.decrypt(apiKeyFromHeader))) {
 
             response.setStatus(401);
-            response.setContentType("application/json");
+            response.setContentType(APPLICATION_JSON);
             response.getWriter().print(objectMapper.writeValueAsString(new ErrorMessage("invalid credentials")));
 
             return;

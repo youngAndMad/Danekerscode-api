@@ -23,4 +23,7 @@ public class User {
     private String apiKey;
 
     private Boolean emailVerified;
+
+    @JsonIgnore
+    private Integer otp;
 }

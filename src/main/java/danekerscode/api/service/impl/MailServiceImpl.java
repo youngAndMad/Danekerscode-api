@@ -38,7 +38,7 @@ public class MailServiceImpl implements MailService {
                                         "email_confirmation",
                                         Map.of(
                                                 "email", mailSendRequest.to(),
-                                                "confirmationLink", mailSendRequest.confirmationLink()
+                                                "otp", mailSendRequest.otp()
                                         )
                                 ),
                                 true

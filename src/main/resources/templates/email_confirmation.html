@@ -58,9 +58,8 @@
     </header>
     <div class="content">
         <p th:text="${email}"></p>
-        <p>Thank you for registering with our website. To confirm your email address, please click the link below:</p>
-        <p>
-            <a th:href="${confirmationLink}">Confirm Your Email</a>
+        <p>Thank you for registering with our website. Below your code to confirm your email address</p>
+        <p th:text="${otp}">
         </p>
         <p>If you didn't register on our website, please ignore this email.</p>
     </div>

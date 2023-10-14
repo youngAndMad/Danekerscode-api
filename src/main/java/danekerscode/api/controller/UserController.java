@@ -1,6 +1,7 @@
 package danekerscode.api.controller;
 
 import danekerscode.api.annotation.ValidatedMethod;
+import danekerscode.api.payload.request.EmailConfirmationRequest;
 import danekerscode.api.payload.request.UserRegistrationRequest;
 import danekerscode.api.service.UserService;
 import jakarta.validation.Valid;
@@ -32,5 +33,16 @@ public class UserController {
                 .status(HttpStatus.CREATED)
                 .body(userService.register(req));
     }
+
+    @ValidatedMethod
+    @PostMapping("confirm-email")
+    ResponseEntity<?> confirmEmail(
+            @RequestBody @Valid EmailConfirmationRequest req,
+            BindingResult br
+    ) {
+        return ResponseEntity
+                .ok(userService.confirmEmail(req));
+    }
+
 
 }

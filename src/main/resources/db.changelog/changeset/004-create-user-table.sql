@@ -4,5 +4,6 @@ CREATE TABLE "user"
     email          VARCHAR(255),
     api_key        VARCHAR(255),
     email_verified BOOLEAN,
+    otp            INTEGER,
     CONSTRAINT pk_user PRIMARY KEY (id)
 );

@@ -1,4 +1,7 @@
 spring:
+  jackson:
+    default-property-inclusion: non_null
+    date-format: java.text.SimpleDateFormat
   datasource:
     url: jdbc:postgresql://localhost:5432/api
     driverClassName: org.postgresql.Driver
