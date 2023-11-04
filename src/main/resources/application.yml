@@ -30,6 +30,7 @@ spring:
   liquibase:
     change-log: classpath:db.changelog/db.changelog-master.yaml
     enabled: true
+    default-schema: public
   mvc:
     log-request-details: true
 logging:

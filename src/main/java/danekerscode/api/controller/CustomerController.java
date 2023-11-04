@@ -1,8 +1,8 @@
 package danekerscode.api.controller;
 
-import danekerscode.api.annotation.ValidatedMethod;
-import danekerscode.api.dto.CustomerDTO;
-import danekerscode.api.service.CustomerService;
+import danekerscode.api.common.annotation.ValidatedMethod;
+import danekerscode.api.domain.dto.CustomerDTO;
+import danekerscode.api.domain.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

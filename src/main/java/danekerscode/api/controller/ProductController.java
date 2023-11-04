@@ -1,8 +1,8 @@
 package danekerscode.api.controller;
 
-import danekerscode.api.annotation.ValidatedMethod;
-import danekerscode.api.dto.ProductDTO;
-import danekerscode.api.service.ProductService;
+import danekerscode.api.common.annotation.ValidatedMethod;
+import danekerscode.api.domain.dto.ProductDTO;
+import danekerscode.api.domain.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,25 +18,36 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<?> findAll() {
+    ResponseEntity<?> findAll() {
         return ResponseEntity
                 .ok(productService.findAll());
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    void delete(@PathVariable Long id) {
         productService.delete(id);
+    }
+
+    @GetMapping("pagination")
+    ResponseEntity<?> findAll(
+            @RequestParam int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return ResponseEntity
+                .ok(productService.findAll(page, size));
     }
 
     @PostMapping
     @ValidatedMethod
-    public ResponseEntity<?> create(
+    ResponseEntity<?> create(
             @RequestBody @Valid ProductDTO productDTO,
             BindingResult br
 
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.create(productDTO));
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(productService.create(productDTO));
     }
 
     @RequestMapping(
@@ -46,7 +57,7 @@ public class ProductController {
                     RequestMethod.PATCH
             }
     )
-    public ResponseEntity<?> update(
+    ResponseEntity<?> update(
             @PathVariable Long id,
             @RequestBody ProductDTO productDTO
     ) {
@@ -54,7 +65,7 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> find(
+    ResponseEntity<?> find(
             @PathVariable Long id
     ) {
         return ResponseEntity

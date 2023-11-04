@@ -1,12 +1,11 @@
 package danekerscode.api.controller;
 
-import danekerscode.api.annotation.ValidatedMethod;
-import danekerscode.api.payload.request.EmailConfirmationRequest;
-import danekerscode.api.payload.request.UserRegistrationRequest;
-import danekerscode.api.service.UserService;
+import danekerscode.api.common.annotation.ValidatedMethod;
+import danekerscode.api.domain.payload.request.EmailConfirmationRequest;
+import danekerscode.api.domain.payload.request.UserRegistrationRequest;
+import danekerscode.api.domain.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestController
 @RequiredArgsConstructor
