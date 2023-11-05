@@ -38,3 +38,5 @@ gradle/wrapper
 .vscode/
 
 .env
+
+src/main/resources/application-dev.yml

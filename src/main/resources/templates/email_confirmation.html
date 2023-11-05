@@ -31,16 +31,6 @@
         padding: 20px 0;
     }
 
-    nav {
-        margin-top: 10px;
-    }
-
-    nav a {
-        color: #007BFF;
-        text-decoration: none;
-        margin: 0 10px;
-    }
-
     .content {
         padding: 20px;
     }
@@ -49,6 +39,11 @@
         background-color: #007BFF;
         color: #fff;
         padding: 10px 0;
+    }
+
+    #otp{
+        font-size: 24px;
+        font-weight: bold;
     }
 </style>
 <body>
@@ -59,7 +54,7 @@
     <div class="content">
         <p th:text="${email}"></p>
         <p>Thank you for registering with our website. Below your code to confirm your email address</p>
-        <p th:text="${otp}">
+        <p th:text="${otp}" id="otp">
         </p>
         <p>If you didn't register on our website, please ignore this email.</p>
     </div>
