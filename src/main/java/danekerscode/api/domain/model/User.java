@@ -24,4 +24,10 @@ public class User {
 
     @JsonIgnore
     private Integer otp;
+
+    public void verifyEmail(String apiKey){
+        this.emailVerified = true;
+        this.otp = null;
+        this.apiKey = apiKey;
+    }
 }

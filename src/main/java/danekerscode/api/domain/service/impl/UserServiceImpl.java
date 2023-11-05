@@ -1,5 +1,6 @@
 package danekerscode.api.domain.service.impl;
 
+import danekerscode.api.domain.dto.ApiKeyDetailsDTO;
 import danekerscode.api.domain.payload.request.EmailConfirmationRequest;
 import danekerscode.api.domain.payload.response.StatusResponse;
 import danekerscode.api.domain.service.AESService;
@@ -54,16 +55,16 @@ public class UserServiceImpl implements UserService {
             EmailConfirmationRequest req
     ) {
         var user = findByEmail(req.email());
+
         if (!user.getOtp().equals(req.otp())) {
             return StatusResponse.fail("invalid otp");
         }
 
-        user.setOtp(null);
-        user.setEmailVerified(true);
+        var apiKey = aesService.encrypt(new ApiKeyDetailsDTO(req.email()).toString());
+        user.verifyEmail(apiKey);
 
         userRepository.save(user);
-        return StatusResponse
-                .success(aesService.encrypt(user.getEmail()));
+        return StatusResponse.success(user.getApiKey());
     }
 
     private User findByEmail(String email) {
